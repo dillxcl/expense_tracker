@@ -1,0 +1,12 @@
+{% extends 'expense_base.html' %}
+{% block content %}
+
+<nav class="navbar navbar-light bg-light">
+    <a href="{% url 'home' %}"class="navbar-brand">Expense Home</a>
+    <form class="form-inline">
+        <span class="navbar-text" style="margin-right: 1rem;">Hello, {{request.user}} </span>
+        <a class="btn btn-dark" href="{% url 'logout' %}">Log out</a>
+    </form>
+  </nav>
+
+{% endblock %}

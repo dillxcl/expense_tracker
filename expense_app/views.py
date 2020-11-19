@@ -4,5 +4,8 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='login')
-def home(request):
-    return render(request, 'expense_base.html', {})
+def expense_home(request):
+    return render(request, 'expense_home.html', {})
+
+
+
