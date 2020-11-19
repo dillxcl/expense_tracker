@@ -1,0 +1,25 @@
+{% extends 'user_base.html' %}
+{% block content %}
+
+<div class="card" style="width: 25rem; border-radius: 1em;">
+    <div class="card-body">
+      <h5 class="card-title">Register Account</h5>
+      <p class="card-text">
+        <form method="POST" action="">
+            {% csrf_token%}
+            {% for field in form %}
+            <div class="form-group">
+              <label >{{ field.label }}: </label><br>
+              {{ field }}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-dark">Sign Up</button>
+        </form>
+      </p>
+      {{form.errors}}
+      <p class="secondary">Already have an Account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+</div>
+
+
+{% endblock %}
