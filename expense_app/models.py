@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Year_Expense(models.Model):
@@ -8,7 +8,7 @@ class Year_Expense(models.Model):
     year = models.CharField(max_length=100)
     annual_salary = models.DecimalField(max_digits=10, decimal_places=2)
     def __str__(self):
-        return self.name
+        return self.year
 
 class Month_Expense(models.Model):
     # name - Month (auto generate 12 months)
