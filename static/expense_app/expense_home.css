@@ -1,0 +1,27 @@
+body {
+    height:100%;
+}
+
+.center {
+    text-align: center;
+}
+
+.noproject-wrapper {
+    margin-top:150px;
+    border: 2px dashed gray;
+}
+
+.noproject-wrapper-text{
+    padding: 25px;
+}
+
+.noproject-wrapper-button {
+    margin-bottom: 25px;
+}
+
+
+
+.card-margin {
+    margin-top:20px;
+    margin-left:20px;
+}
