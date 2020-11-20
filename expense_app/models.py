@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class Year_Expense(models.Model):
     # name - What Year (front end option to select what year)
     # budget - annual salary
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     year = models.CharField(max_length=100)
     annual_salary = models.DecimalField(max_digits=10, decimal_places=2)
     def __str__(self):

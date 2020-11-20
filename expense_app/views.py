@@ -13,17 +13,19 @@ def expense_home(request):
         form = YearExpenseForm(request.POST)
         print(form)
         if form.is_valid():
-            form.save()
-            year_expense = Year_Expense.objects.all()
+            year_expense_model = form.save(commit=False)
+            year_expense_model.user = request.user 
+            year_expense_model.save()
+            year_expense = Year_Expense.objects.filter(user=request.user)
             return render(request, 'expense_home.html', {'year_expense': year_expense})
         else:
             return redirect('home')
     else:
-        year_expense = Year_Expense.objects.all()
+        year_expense = Year_Expense.objects.filter(user=request.user)
         return render(request, 'expense_home.html', {'year_expense':year_expense})
 
 
-
+@login_required(login_url='login')
 def year_expense_delete(request, year_expense_id):
     year_expense = Year_Expense.objects.get(pk=year_expense_id)
     year_expense.delete()
