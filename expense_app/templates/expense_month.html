@@ -1,0 +1,27 @@
+{% extends 'expense_base.html' %}
+{% block content %}
+
+<nav class="navbar navbar-light bg-light">
+    <a href="{% url 'home' %}"class="navbar-brand">Expense Home</a>
+    <form class="form-inline">
+        <span class="navbar-text" style="margin-right: 1rem;">Hello, {{request.user}} </span>
+        <a class="btn btn-dark" href="{% url 'logout' %}">Log out</a>
+    </form>
+</nav>
+
+<div class="container">
+    <div class="card-columns">
+        {% for each_month in month_expense %}
+        <div class="card bg-light mb-3 card-margin" style="max-width: 18rem;">
+            <div class="card-header">{{ each_month.month }}</div>
+            <div class="card-body">
+            <h5 class="card-title">Monthly Salary: ${{ year_expense.monthly_salary }}</h5>
+            <h5 class="card-text"> Money Left:</h5>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
