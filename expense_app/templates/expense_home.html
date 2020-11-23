@@ -3,6 +3,15 @@
 
 <nav class="navbar navbar-light bg-light">
     <a href="{% url 'home' %}"class="navbar-brand">Expense Home</a>
+    {% if year_expense %}
+        <a class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
+            <span>Add Yearly Expense</span>
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+        </a>
+    {% endif %}
     <form class="form-inline">
         <span class="navbar-text" style="margin-right: 1rem;">Hello, {{request.user}} </span>
         <a class="btn btn-dark" href="{% url 'logout' %}">Log out</a>
@@ -11,26 +20,21 @@
 
 
 {% if year_expense %}
-    <div class="card-deck">
-        {% for each_year in year_expense%}
-        <div class="card bg-light mb-3 card-margin" style="max-width: 18rem;">
-            <div class="card-header">{{ each_year.year }}</div>
-            <div class="card-body">
-            <h5 class="card-title">Annual Salary: ${{ each_year.annual_salary }}</h5>
-            <h5 class="card-text"> Money Left:</h5>
-            <button class="btn btn-primary">visit</button>
-            <a href="{% url 'year_expense_delete' each_year.id %}" class="btn btn-danger">delete</a>
+    <div class="container">
+        <div class="card-columns">
+            {% for each_year in year_expense%}
+            <div class="card bg-light mb-3 card-margin" style="max-width: 19rem; max-height: 20rem;">
+                <div class="card-header">{{ each_year.year }}</div>
+                <div class="card-body">
+                <h5 class="card-title">Annual Salary: ${{ each_year.annual_salary }}</h5>
+                <h5 class="card-text"> Money Left:</h5>
+                <a href="{% url 'expense_month' each_year.id %}" class="btn btn-primary">visit</a>
+                <a href="{% url 'year_expense_delete' each_year.id %}" class="btn btn-danger">delete</a>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-    <a class="btn btn-dark noproject-wrapper-button" data-toggle="modal" data-target="#exampleModal">
-        <span>Add Yearly Expense</span>
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-            <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-        </svg>
-    </a>
     
 {% else %}
     <div class="container">
@@ -64,25 +68,25 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-              </div>
-              <div class="modal-body">
-                  <label> Please Select Your Year: </label>
-                  <select id="year" name="year" class="form-control" required>
-                      <option value="">year</option>
-                      <option value="2020">2020</option>
-                      <option value="2021">2021</option>
-                      <option value="2022">2022</option>
-                      <option value="2023">2023</option>
-                      <option value="2024">2024</option>
-                      <option value="2025">2025</option>
-                      <option value="2026">2026</option>
-                      <option value="2027">2027</option>
-                      <option value="2028">2028</option>
-                      <option value="2029">2029</option>
-                      <option value="2030">2030</option>
-                  </select><br>
-                  <label> Please Enter Your Annual Salary: </label><br>
-                  <input type="text" class="form-control" name="annual_salary" required> 
+                </div>
+                <div class="modal-body">
+                    <label> Please Select Your Year: </label>
+                    <select id="year" name="year" class="form-control" required>
+                        <option value="">year</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                    </select><br>
+                    <label> Please Enter Your Annual Salary: </label><br>
+                    <input type="text" class="form-control" name="annual_salary" required> 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
