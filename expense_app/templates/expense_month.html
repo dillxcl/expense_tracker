@@ -3,6 +3,7 @@
 
 <nav class="navbar navbar-light bg-light">
     <a href="{% url 'home' %}"class="navbar-brand">Expense Home</a>
+    <p>{{ year_expense.year }}</p>
     <form class="form-inline">
         <span class="navbar-text" style="margin-right: 1rem;">Hello, {{request.user}} </span>
         <a class="btn btn-dark" href="{% url 'logout' %}">Log out</a>
@@ -18,7 +19,7 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">Monthly Salary: ${{ each_month.monthly_salary }}</h5>
-                <h5 class="card-text"> Money Left:</h5>
+                <h5 class="card-text"> Money Left: ${{ each_month.monthly_expense_left }}</h5>
                 <a href="{% url 'expense_daily' each_month.id %}" class='btn btn-secondary'>Daily Expense</a>
             </div>
         </div>

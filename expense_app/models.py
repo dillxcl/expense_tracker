@@ -34,10 +34,11 @@ class Month_Expense(models.Model):
         for each_expense in daily_expense:
             total_expense_amount += each_expense.daily_spent
         return self.monthly_salary - total_expense_amount
+
     def monthly_total_transactions(self):
         daily_expense = Daily_Expense.objects.filter(month=self)
         return len(daily_expense)
-
+        
 @receiver(post_save, sender=Year_Expense)
 def create_month(sender, instance, created, **kwargs):
     if created:
