@@ -1,0 +1,65 @@
+{% extends 'expense_base.html' %}
+{% block content %}
+<nav class="navbar navbar-light bg-light">
+    <a href="{% url 'home' %}"class="navbar-brand">Expense Home</a>
+    <p>{{ month_expense.month }}</p>
+    <form class="form-inline">
+        <span class="navbar-text" style="margin-right: 1rem;">Hello, {{request.user}} </span>
+        <a class="btn btn-dark" href="{% url 'logout' %}">Log out</a>
+    </form>
+</nav>
+
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h5>Monthly Salaray:</h5><br>
+            {{ month_expense.monthly_salary }}
+        </div>
+        <div class="col-sm">
+            <h5>Monthly Expense left:</h5><br>
+            {{ month_expense.monthly_expense_left }}
+        </div>
+        <div class="col-sm">
+            <h5>Monthly Total Transactions:</h5><br>
+            {{ month_expense.monthly_total_transactions }}
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Expense</th>
+            <th scope="col">Last</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for each_daily_expense in daily_expense %}
+            <tr>
+                <td>{{each_daily_expense.category}}</td>
+                <td>{{each_daily_expense.daily_spent}}</td>
+                <td>{{each_daily_expense.date_input}}</td>
+                <td>
+                    <a href="{% url 'daily_expense_delete' month_expense.id each_daily_expense.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<form method='POST'>
+    {% csrf_token %}
+    <label>Category: </label>
+    <input type='text' name='category'>
+    <label>Expense: </label>
+    <input type='text' name='daily_spent'>
+    <label>Date: </label>
+    <input type='text' name='date_input'>
+    <button type="submit" class="btn btn-primary btn-sm" >Add</button>
+</form>
+
+{% endblock %}

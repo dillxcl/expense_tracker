@@ -13,10 +13,13 @@
     <div class="card-columns">
         {% for each_month in month_expense %}
         <div class="card bg-light mb-3 card-margin" style="max-width: 18rem;">
-            <div class="card-header">{{ each_month.month }}</div>
+            <div class="card-header">
+                {{ each_month.month }}
+            </div>
             <div class="card-body">
-            <h5 class="card-title">Monthly Salary: ${{ year_expense.monthly_salary }}</h5>
-            <h5 class="card-text"> Money Left:</h5>
+                <h5 class="card-title">Monthly Salary: ${{ each_month.monthly_salary }}</h5>
+                <h5 class="card-text"> Money Left:</h5>
+                <a href="{% url 'expense_daily' each_month.id %}" class='btn btn-secondary'>Daily Expense</a>
             </div>
         </div>
     {% endfor %}
