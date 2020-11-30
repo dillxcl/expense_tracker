@@ -27,7 +27,7 @@
                 <div class="card-header">{{ each_year.year }}</div>
                 <div class="card-body">
                 <h5 class="card-title">Annual Salary: ${{ each_year.annual_salary }}</h5>
-                <h5 class="card-text"> Money Left:</h5>
+                <h5 class="card-text"> Money Left: ${{ each_year.money_left }}</h5>
                 <a href="{% url 'expense_month' each_year.id %}" class="btn btn-primary">visit</a>
                 <a href="{% url 'year_expense_delete' each_year.id %}" class="btn btn-danger">delete</a>
                 </div>

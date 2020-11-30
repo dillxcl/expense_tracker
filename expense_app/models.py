@@ -18,7 +18,15 @@ class Year_Expense(models.Model):
         month_average = self.annual_salary/12
         return round(month_average,2)
         
-
+    def money_left(self):
+        each_money_left = Month_Expense.objects.filter(year=self)
+        total_expense_left = 0
+        for each_expense in each_money_left:
+            total_expense_left += each_expense.monthly_expense_left()
+        if total_expense_left > self.annual_salary:
+            return self.annual_salary
+        else:
+            return total_expense_left
 
 class Month_Expense(models.Model):
     year = models.ForeignKey(Year_Expense, on_delete=models.CASCADE, default='', null=True)

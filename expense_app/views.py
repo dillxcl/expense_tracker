@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 def expense_home(request):
     if request.method == 'POST':
         form = YearExpenseForm(request.POST)
-        print(form)
         if form.is_valid():
             year_expense_model = form.save(commit=False)
             year_expense_model.user = request.user 
