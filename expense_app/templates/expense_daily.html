@@ -1,0 +1,97 @@
+{% extends 'expense_base.html' %}
+{% block content %}
+{% load static %}
+<script type="text/javascript" src="{% static '/expense_app/js/expense_daily.js' %}"></script>
+<nav class="navbar navbar-light bg-light">
+    <a href="{% url 'home' %}"class="navbar-brand">Expense Home</a>
+    <p>{{ month_expense.month }}</p>
+    <form class="form-inline">
+        <span class="navbar-text" style="margin-right: 1rem;">Hello, {{request.user}} </span>
+        <a class="btn btn-dark" href="{% url 'logout' %}">Log out</a>
+    </form>
+</nav>
+
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h5>Monthly Salaray:</h5><br>
+            {{ month_expense.monthly_salary }}
+        </div>
+        <div class="col-sm">
+            <h5>Monthly Expense left:</h5><br>
+            {{ month_expense.monthly_expense_left }}
+        </div>
+        <div class="col-sm">
+            <h5>Monthly Total Transactions:</h5><br>
+            {{ month_expense.monthly_total_transactions }}
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<hr>
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-8"><h3>Monthly Expense Details</h3></div>
+                <div class="col-sm-4 right">
+                    <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Expense</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="display: none;">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a data-id="{{ month_expense.id }}" class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                        <a class="delete" title="Delete" data-toggle="tooltip" ><i class="material-icons">&#xE872;</i></a>
+                    </td>
+                </tr>
+                {% for each_daily_expense in daily_expense %}
+                    <tr>
+                        <td>{{each_daily_expense.category}}</td>
+                        <td>{{each_daily_expense.daily_spent}}</td>
+                        <td>{{each_daily_expense.date_input}}</td>
+                        <td>
+                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a onclick="deleteExpense(this)" data-id ="{{ each_daily_expense.id }}" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function deleteExpense(e){
+        let id = e.dataset.id
+        fetch('', {
+            method: 'DELETE', 
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'id': id
+            }),
+            credentials: 'same-origin',
+        })
+    }
+</script>
+{% csrf_token %}
+{% endblock %}
