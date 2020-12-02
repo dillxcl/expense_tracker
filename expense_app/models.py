@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from decimal import Decimal
+from django.template.defaultfilters import slugify
 # Create your models here.
 
 class Year_Expense(models.Model):
@@ -10,7 +11,14 @@ class Year_Expense(models.Model):
     # budget - annual salary
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     year = models.CharField(max_length=100)
+    year_slug = models.SlugField(max_length=200, unique=True, default='')
     annual_salary = models.DecimalField(max_digits=10, decimal_places=2)
+    def save(self, *args, **kwargs):
+        super(Year_Expense, self).save(*args, **kwargs)
+        if not self.year_slug:
+            self.year_slug = slugify(self.year) + "%" + str(self.id)
+            self.save()
+
     def __str__(self):
         return self.year
 
@@ -23,7 +31,7 @@ class Year_Expense(models.Model):
         total_expense_left = 0
         for each_expense in each_money_left:
             total_expense_left += each_expense.monthly_expense_left()
-        if total_expense_left > self.annual_salary:
+        if round(total_expense_left) >= self.annual_salary:
             return self.annual_salary
         else:
             return total_expense_left
@@ -31,8 +39,15 @@ class Year_Expense(models.Model):
 class Month_Expense(models.Model):
     year = models.ForeignKey(Year_Expense, on_delete=models.CASCADE, default='', null=True)
     month = models.CharField(max_length=100, default='')
+    month_slug = models.SlugField(max_length=200, unique=True, default='')
     monthly_salary = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal(0))
     # year_expense = models.ForiegnKey(Year_Expense, on_delete=models.CASCADE)
+    def save(self, *args, **kwargs):
+        super(Month_Expense, self).save(*args, **kwargs)
+        if not self.month_slug:
+            self.month_slug = slugify(self.month) + "%" + str(self.id)
+            self.save()
+
     def __str__(self):
         return self.month
 

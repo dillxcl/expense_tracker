@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserCreateForm
 
@@ -14,11 +14,14 @@ from django.contrib import messages
 # Create your views here.
 # Login views  url : login
 def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('home'))
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            print(user)
             login(request, user)
             return redirect('home')
         else:
@@ -28,6 +31,8 @@ def loginPage(request):
 
 # Sign_up views url : sign_up
 def sign_up(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('home'))
     form = UserCreateForm()
     if request.method == 'POST':
         form = UserCreateForm(request.POST)
