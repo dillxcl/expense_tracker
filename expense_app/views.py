@@ -52,11 +52,15 @@ def expense_daily(request, year_slug, month_slug):
 def create_daily_expense(request):
     if request.method == 'POST':
         month_id= request.POST['month_id']
+        daily_id = request.POST['daily_id']
         category = request.POST['category']
-        daily_spent = request.POST['daily_spent']
-        date_input = request.POST['date_input']
+        daily_spent = request.POST['expense']
+        date_input = request.POST['date']
         current_month = Month_Expense.objects.get(pk=month_id)
-        Daily_Expense.objects.create(month=current_month, category=category, daily_spent=daily_spent, date_input=date_input)
+        if daily_id == "None":
+            Daily_Expense.objects.create(month=current_month, category=category, daily_spent=daily_spent, date_input=date_input)
+        else:
+            Daily_Expense.objects.filter(pk=daily_id).update(category=category,daily_spent=daily_spent,date_input=date_input)
         return HttpResponse('')
 
 @login_required(login_url='login')

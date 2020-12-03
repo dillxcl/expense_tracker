@@ -56,7 +56,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <a data-id="{{ month_expense.id }}" class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                        <a data-id="{{ month_expense.id }}" daily-id="None" class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                         <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                         <a class="delete" title="Delete" data-toggle="tooltip" ><i class="material-icons">&#xE872;</i></a>
                     </td>
@@ -67,7 +67,7 @@
                         <td>{{each_daily_expense.daily_spent}}</td>
                         <td>{{each_daily_expense.date_input}}</td>
                         <td>
-                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a data-id="{{ month_expense.id }}" daily-id="{{ each_daily_expense.id }}" class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a onclick="deleteExpense(this)" data-id ="{{ each_daily_expense.id }}" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
