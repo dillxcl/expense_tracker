@@ -7,8 +7,8 @@ $(document).ready(function(){
 		var index = $("table tbody tr:last-child").index();
         var row = '<tr>' +
             '<td><input type="text" class="form-control" name="category"></td>' +
-            '<td><input type="text" class="form-control" name="daily_spent"></td>' +
-            '<td><input type="text" class="form-control" name="date_input"></td>' +
+            '<td><input type="text" class="form-control" name="expense"></td>' +
+            '<td><input type="text" class="form-control" name="date"></td>' +
 			'<td>' + actions + '</td>' +
         '</tr>';
     	$("table").append(row);		
@@ -16,8 +16,7 @@ $(document).ready(function(){
         //$('[data-toggle="tooltip"]').tooltip();
     });
 	// Add row on add button click
-	$(document).on("click", ".add", function(e){
-		
+	$(document).on("click", ".add", function(){
 		var empty = false;
 		var input = $(this).parents("tr").find('input[type="text"]');
         input.each(function(){
@@ -30,17 +29,17 @@ $(document).ready(function(){
 		});
 		$(this).parents("tr").find(".error").first().focus();
 		if(!empty){	
-			var input = $(this).parents("tr").find('input[type="text"]');
-			console.log($("input[name='csrfmiddlewaretoken']").val());
+			console.log($(this).attr("daily-id"))
 			$.ajax({
 				type:'POST',
 				url:"/expense_home/daily_expense_create/",
 				data:{
 					csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
 					month_id: $(this).attr("data-id"),
+					daily_id: $(this).attr("daily-id"),
 					category: $(this).parents("tr").find('input[name="category"]').val(),
-					daily_spent: $(this).parents("tr").find('input[name="daily_spent"]').val(), 
-					date_input: $(this).parents("tr").find('input[name="date_input"]').val()				
+					expense: $(this).parents("tr").find('input[name="expense"]').val(), 
+					date: $(this).parents("tr").find('input[name="date"]').val()				
 				},
 				dataType: "json",
 				success:function(){
@@ -57,8 +56,10 @@ $(document).ready(function(){
     });
 	// Edit row on edit button click
 	$(document).on("click", ".edit", function(){		
+		var n = 0;
         $(this).parents("tr").find("td:not(:last-child)").each(function(){
-			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '" name="' + $(this).parents().parents().find("th:eq("+n+")").text().toLowerCase() + '">');
+			n = n+1;
 		});		
 		$(this).parents("tr").find(".add, .edit").toggle();
 		$(".add-new").attr("disabled", "disabled");
