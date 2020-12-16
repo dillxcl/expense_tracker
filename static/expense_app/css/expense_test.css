@@ -7,10 +7,6 @@
 body {
     background: #fafafa;
 }
-body:not(.modal-open){
-    padding-right: 0px !important;
-  }
-
 
 /* ---------------------------------------------------
     SIDEBAR STYLE

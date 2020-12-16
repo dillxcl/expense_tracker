@@ -15,5 +15,5 @@ urlpatterns = [
     path('expense_home/daily_expense_create/', views.create_daily_expense, name='daily_expense_create'),
     path('expense_daily/<month_expense_id>/<daily_expense_id>', views.daily_expense_delete, name='daily_expense_delete'),
 
-    
+    path('home_test', views.home_test, name='home_test')
 ]

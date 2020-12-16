@@ -1,97 +1,207 @@
 {% extends 'expense_base.html' %}
 {% block content %}
 
-<nav class="navbar navbar-light bg-light">
-    <a href="{% url 'home' %}"class="navbar-brand">Expense Home</a>
-    {% if year_expense %}
-        <a class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">
-            <span>Add Yearly Expense</span>
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
-        </a>
-    {% endif %}
-    <form class="form-inline">
-        <span class="navbar-text" style="margin-right: 1rem;">Hello, {{request.user}} </span>
-        <a class="btn btn-dark" href="{% url 'logout' %}">Log out</a>
-    </form>
-</nav>
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Expense Tracker</h3>
+            <strong>ET</strong>
+        </div>
 
+        <ul class="components">
+            <li>
+                <a href="#">
+                    <i class="fas fa-home" ></i>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-file-alt"></i>
+                    Pages
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-user"></i>
+                    Portfolio
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-address-book"></i>
+                    Contact
+                </a>
+            </li>
+        </ul>
+        <a href="#">Log out</a>
+    </nav>
 
-{% if year_expense %}
-    <div class="container">
-        <div class="card-columns">
-            {% for each_year in year_expense%}
-            <div class="card bg-light mb-3 card-margin" style="max-width: 19rem; max-height: 20rem;">
-                <div class="card-header">{{ each_year.year }}</div>
-                <div class="card-body">
-                <h5 class="card-title">Annual Salary: ${{ each_year.annual_salary }}</h5>
-                <h5 class="card-text"> Money Left: ${{ each_year.money_left }}</h5>
-                <a href="{% url 'expense_month' each_year.year_slug %}" class="btn btn-primary">visit</a>
-                <a href="{% url 'year_expense_delete' each_year.id %}" class="btn btn-danger">delete</a>
+    <!-- Page Content Holder -->
+    <div id="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <h3 class="year-title">Year Expense</h3>
+                    <a href="" class="btn btn-primary add-year-btn" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i></a>
+                    
+                    <div class="form-group has-search search-btn">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                        <div class="row">
+                        {% if year_expense %}
+                                <div class="col-3">
+                                    <p class="text-secondary">Total Expense</p>
+                                    <strong>${{ year_expense }}</strong>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-secondary">Total Income</p>
+                                    <strong>${{ year_expense.annual_salary }}</strong>
+                                </div>
+                                <div class="col-3">
+                                    <p class="text-secondary">Net</p>
+                                    <strong>${{ year_expense.money_left }}</strong>
+                                </div>
+                        {% endif %}
+                        </div>
+                    <hr>
+                    <div class="row">
+                        {% if year_expense %}
+                            {% for each_year_expense in year_expense %}
+                                <div class="year-expense-table">
+                                    <div class="card">
+                                        <div class="card-body">
+                                        <h5 class="card-title">{{ each_year_expense.year }}</h5>
+                                        <a href="#" class="close-btn"><i class="fas fa-times"></i></a>
+                                        <h6 class="card-text text-secondary">Jan 1 created</h6>
+                                        <a href="#" class="btn button-box">Check</a>
+                                        <a href="#" class="btn button-box" style="margin-left:10px;">Edit</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="year-expense-table">
+                            <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title">You Do Not have Year Expense, Please Create One</h5>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="row year-budget">
+                        <a href="#" class="btn btn-dark">Set up Yearly Budget</a>
+                    </div>
+                    <div class="row yearly-overview">
+                        <h4>Yearly Overview</h4>
+                        <div class="col-lg-6 yearly-overview-card">
+                            <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title">Expense</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted">Chart</h6>
+                                  <p class="card-text">$120.56</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 yearly-overview-card">
+                            <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title">Income</h5>
+                                  <h6 class="card-subtitle mb-2 text-muted">Chart</h6>
+                                  <p class="card-text">$120.56</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="expense-by-categories">
+                        <div class="row">
+                            <h4>Expense By Categories</h4>
+                            <div class="col expense-by-categories-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Food & Beverage</h5>
+                                        <p class="card-text">$120.56</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col expense-by-categories-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Groceries</h5>
+                                        <p class="card-text">$120.56</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col expense-by-categories-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Household</h5>
+                                        <p class="card-text">$120.56</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
     </div>
-    
-{% else %}
-    <div class="container">
-        <div class="noproject-wrapper center">
-            <h3 class="noproject-wrapper-text">
-                Sorry, you don't have any yearly expense tracker yet.
-            </h3>
-            <a class="btn btn-dark noproject-wrapper-button" data-toggle="modal" data-target="#exampleModal">
-                <span>Add Yearly Expense</span>
-                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-            </a>
-        </div>
-    </div>
-{% endif %} 
+</div>
 
+
+
+
+
+<!-- jQuery CDN -->
+ <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+ <!-- Bootstrap Js CDN -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="position:fixed;">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form method="POST">
+        <form method="POST" class="form-group">
             {% csrf_token %}
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Year Expense</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                    <label> Please Select Your Year: </label>
-                    <select id="year" name="year" class="form-control" required>
-                        <option value="">year</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                        <option value="2028">2028</option>
-                        <option value="2029">2029</option>
-                        <option value="2030">2030</option>
-                    </select><br>
-                    <label> Please Enter Your Annual Salary: </label><br>
-                    <input type="text" class="form-control" name="annual_salary" required> 
-              </div>
-              <div class="modal-footer">
+                <h5 class="modal-title" id="exampleModalLabel">Add Year Expense</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>        
+            <div class="modal-body">
+                <label> Please Select Your Year: </label>
+                <select id="year" name="year" class="form-control" style="-webkit-appearance:menulist;">
+                    <option value="">year</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select><br>
+                <label> Please Enter Your Annual Salary: </label><br>
+                <input type="text" class="form-control" name="annual_salary" placeholder="Annual Salary" required> 
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Add</button>
-              </div>
+            </div>
         </form>
       </div>
     </div>

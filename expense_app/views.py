@@ -70,3 +70,7 @@ def daily_expense_delete(request, month_expense_id , daily_expense_id):
     current_month = Month_Expense.objects.get(pk=month_expense_id)
     daily_expense = Daily_Expense.objects.filter(month=current_month)
     return render(request, 'expense_daily.html', {'month_expense':current_month, 'daily_expense': daily_expense})
+
+
+def home_test(request):
+    return render(request, 'expense_test.html', {})
