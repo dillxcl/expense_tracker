@@ -51,31 +51,29 @@
                         <input type="text" class="form-control" placeholder="Search">
                     </div>
                         <div class="row">
-                        {% if year_expense %}
-                                <div class="col-3">
-                                    <p class="text-secondary">Total Expense</p>
-                                    <strong>${{ year_expense }}</strong>
-                                </div>
-                                <div class="col-6">
-                                    <p class="text-secondary">Total Income</p>
-                                    <strong>${{ year_expense.annual_salary }}</strong>
-                                </div>
-                                <div class="col-3">
-                                    <p class="text-secondary">Net</p>
-                                    <strong>${{ year_expense.money_left }}</strong>
-                                </div>
-                        {% endif %}
+                            <div class="col-3">
+                                <p class="text-secondary">Total Expense</p>
+                                <strong>$0</strong>
+                            </div>
+                            <div class="col-6">
+                                <p class="text-secondary">Total Income</p>
+                                <strong>${{ total_income }}</strong>
+                            </div>
+                            <div class="col-3">
+                                <p class="text-secondary">Net</p>
+                                <strong>$0</strong>
+                            </div>
                         </div>
                     <hr>
                     <div class="row">
                         {% if year_expense %}
-                            {% for each_year_expense in year_expense %}
+                            {% for each_year_element in year_expense %}
                                 <div class="year-expense-table">
                                     <div class="card">
                                         <div class="card-body">
-                                        <h5 class="card-title">{{ each_year_expense.year }}</h5>
-                                        <a href="#" class="close-btn"><i class="fas fa-times"></i></a>
-                                        <h6 class="card-text text-secondary">Jan 1 created</h6>
+                                        <h5 class="card-title">{{ each_year_element.year }}</h5>
+                                        <a href="{% url 'year_expense_delete' each_year_element.id %}" class="close-btn"><i class="fas fa-times"></i></a>
+                                        <h6 class="card-text text-secondary">{{ each_year_element.date }} Created</h6>
                                         <a href="#" class="btn button-box">Check</a>
                                         <a href="#" class="btn button-box" style="margin-left:10px;">Edit</a>
                                         </div>
@@ -86,7 +84,8 @@
                         <div class="year-expense-table">
                             <div class="card">
                                 <div class="card-body">
-                                  <h5 class="card-title">You Do Not have Year Expense, Please Create One</h5>
+                                  <h5 class="card-title">You Do Not have Year Expense</h5>
+                                  <h6 class="card-text">Please Create One</h6>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +112,7 @@
                                 <div class="card-body">
                                   <h5 class="card-title">Income</h5>
                                   <h6 class="card-subtitle mb-2 text-muted">Chart</h6>
-                                  <p class="card-text">$120.56</p>
+                                  <p class="card-text">${{ current_year_income }} </p>
                                 </div>
                             </div>
                         </div>

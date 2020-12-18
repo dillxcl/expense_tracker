@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Year_Expense, Month_Expense, Daily_Expense
 from .forms import YearExpenseForm, DailyExpenseForm
 import json
-
+import datetime
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 
@@ -16,12 +16,44 @@ def expense_home(request):
             year_expense_model.user = request.user 
             year_expense_model.save()
             year_expense = Year_Expense.objects.filter(user=request.user)
-            return render(request, 'expense_home.html', {'year_expense': year_expense})
+            total_income = year_total_income(year_expense)
+            year_income = current_year_income(year_expense)
+            context = {
+            'year_expense':year_expense, 
+            'total_income':total_income,
+            'current_year_income': year_income
+                }
+            return render(request, 'expense_home.html', context)
         else:
             return redirect('home')
     else:
         year_expense = Year_Expense.objects.filter(user=request.user)
-        return render(request, 'expense_home.html', {'year_expense':year_expense})
+        total_income = year_total_income(year_expense)
+        year_income = current_year_income(year_expense)
+        context = {
+            'year_expense':year_expense, 
+            'total_income':total_income,
+            'current_year_income': year_income
+            }
+        return render(request, 'expense_home.html', context)
+
+def year_total_income(year_expense):
+    total_income = 0
+    for each_year in year_expense:
+        total_income += each_year.annual_salary
+    return total_income
+
+def current_year_income(year_expense):
+    res_income = 0
+    for each_year in year_expense:
+        print(each_year.year)
+        if str(each_year.year) == str(datetime.date.today().year):
+            res_income = each_year.annual_salary
+    return res_income
+    
+
+
+
 
 
 @login_required(login_url='login')

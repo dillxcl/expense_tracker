@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from decimal import Decimal
 from django.template.defaultfilters import slugify
+import datetime
 # Create your models here.
 
 class Year_Expense(models.Model):
@@ -11,6 +12,7 @@ class Year_Expense(models.Model):
     # budget - annual salary
     user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     year = models.CharField(max_length=100)
+    date = models.DateField(default=datetime.date.today)
     year_slug = models.SlugField(max_length=200, unique=True, default='')
     annual_salary = models.DecimalField(max_digits=10, decimal_places=2)
     def save(self, *args, **kwargs):
@@ -22,6 +24,10 @@ class Year_Expense(models.Model):
     def __str__(self):
         return self.year
 
+    def total_income(self):
+        total_income+=self.annual_salary
+        return total_income
+        
     def monthly_salary(self):
         month_average = self.annual_salary/12
         return round(month_average,2)
