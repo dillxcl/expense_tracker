@@ -52,10 +52,6 @@ def current_year_income(year_expense):
     return res_income
     
 
-
-
-
-
 @login_required(login_url='login')
 def year_expense_delete(request, year_expense_id):
     year_expense = Year_Expense.objects.get(pk=year_expense_id)

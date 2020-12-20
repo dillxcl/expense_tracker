@@ -29,12 +29,20 @@ body:not(.modal-open){
     top: 0;
     left: 0;
     height: 100%;
+    transition: all 0.3s;
+}
 
+#sidebar .active ul li a{
+    padding-left:50px !important;
+}
+
+a[data-toggle="collapse"] {
+    position: relative !important;
 }
 
 #sidebar ul li a i {
     margin-left: 10px;
-    float:left;
+    text-align: left;
 }
 
 #sidebar ul li a {
@@ -80,7 +88,17 @@ body:not(.modal-open){
     display: inline-block;
 }
 
+a[data-toggle="collapse"] {
+    position: relative;
+}
 
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */

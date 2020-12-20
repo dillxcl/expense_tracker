@@ -9,18 +9,25 @@
             <strong>ET</strong>
         </div>
 
-        <ul class="components">
+        <ul class="components list-unstyled">
             <li>
-                <a href="#">
+                <a href="{% url 'home' %}">
                     <i class="fas fa-home" ></i>
                     Home
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-file-alt"></i>
-                    Pages
+            <li class="active">
+                <a class="dropdown-toggle" data-toggle="collapse" href="#yearSubmenu" aria-expanded="false">
+                    <i class="fas fa-calendar-alt"></i>
+                    Year
                 </a>
+                <ul class="collapse list-unstyled" id="yearSubmenu">
+                    {% for each_year_element in year_expense %}
+                    <li>
+                        <a href="{% url 'expense_month' each_year_element.year_slug %}">{{ each_year_element.year }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
             </li>
             <li>
                 <a href="#">
@@ -34,8 +41,13 @@
                     Contact
                 </a>
             </li>
+            <li>
+                <a href="{% url 'logout'%}">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Log out
+                </a>
+            </li>
         </ul>
-        <a href="#">Log out</a>
     </nav>
 
     <!-- Page Content Holder -->
@@ -74,7 +86,7 @@
                                         <h5 class="card-title">{{ each_year_element.year }}</h5>
                                         <a href="{% url 'year_expense_delete' each_year_element.id %}" class="close-btn"><i class="fas fa-times"></i></a>
                                         <h6 class="card-text text-secondary">{{ each_year_element.date }} Created</h6>
-                                        <a href="#" class="btn button-box">Check</a>
+                                        <a href="{% url 'expense_month' each_year_element.year_slug %}" class="btn button-box">Check</a>
                                         <a href="#" class="btn button-box" style="margin-left:10px;">Edit</a>
                                         </div>
                                     </div>
@@ -205,5 +217,4 @@
       </div>
     </div>
   </div>
-
 {% endblock %}
