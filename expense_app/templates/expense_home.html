@@ -28,10 +28,40 @@
                 <div class="card-body">
                 <h5 class="card-title">Annual Salary: ${{ each_year.annual_salary }}</h5>
                 <h5 class="card-text"> Money Left: ${{ each_year.money_left }}</h5>
-                <a href="{% url 'expense_month' each_year.year_slug %}" class="btn btn-primary">visit</a>
+                <a  href="{% url 'expense_month' each_year.year_slug %}" class="btn btn-primary">visit</a>
+                <a class="btn btn-secondary" data-toggle="modal" data-target="#editModal">
+                    <span>edit</span> </a>
                 <a href="{% url 'year_expense_delete' each_year.id %}" class="btn btn-danger">delete</a>
                 </div>
             </div>
+                <!-- Modal for Edit-->
+                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Updating Year Expense</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <label>Selected Year: </label>
+                                    <input class = "form-control mr-sm-2" type = "search" placeholder="{{ each_year.year }}" value = "{{ each_year.year }}" aria-label="Search"
+                                    name = "year" readonly>
+                                    <input type="hidden"  name="pk" value="{{ each_year.id }}"> 
+                                    <label> Please Enter Your Annual Salary: </label><br>
+                                    <input type="text" aria-label="Search" class="form-control" placeholder="{{ each_year.annual_salary }}"  value = "{{ each_year.annual_salary }}" name="annual_salary" required> 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -52,7 +82,6 @@
         </div>
     </div>
 {% endif %} 
-
 
 
 
@@ -84,10 +113,12 @@
                         <option value="2028">2028</option>
                         <option value="2029">2029</option>
                         <option value="2030">2030</option>
+                    
                     </select><br>
                     <label> Please Enter Your Annual Salary: </label><br>
                     <input type="text" class="form-control" name="annual_salary" required> 
-              </div>
+                    <input type="hidden"  name="pk" value= "0000">
+                </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Add</button>

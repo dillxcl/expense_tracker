@@ -21,6 +21,7 @@
                 <h5 class="card-title">Monthly Salary: ${{ each_month.monthly_salary }}</h5>
                 <h5 class="card-text"> Money Left: ${{ each_month.monthly_expense_left }}</h5>
                 <a href="{% url 'expense_daily' year_expense.year_slug each_month.month_slug %}" class='btn btn-secondary'>Daily Expense</a>
+                <a href="{% url 'monthly_expense_delete' year_expense.year_slug each_month.month_slug %}" class="btn btn-danger">delete</a>
             </div>
         </div>
     {% endfor %}

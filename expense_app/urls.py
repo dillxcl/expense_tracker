@@ -6,14 +6,13 @@ urlpatterns = [
     #Expense_home page
     path('expense_home', views.expense_home, name='home'),
     path('year_expense_delete/<year_expense_id>', views.year_expense_delete, name='year_expense_delete'),
-
+    path('year_expense_edit/<year_expense_id>', views.year_expense_edit, name = 'year_expense_edit'),
     #Display Expense_month page
     path('expense_home/<year_slug>', views.expense_month, name='expense_month'),
-    
+    path('expense_home/monthly_expense_delete/<year_slug>/<month_slug>', views.monthly_expense_delete, name='monthly_expense_delete'),
     #Expense_Daily page
     path('expense_home/<year_slug>/<month_slug>', views.expense_daily, name='expense_daily'),
     path('expense_home/daily_expense_create/', views.create_daily_expense, name='daily_expense_create'),
     path('expense_daily/<month_expense_id>/<daily_expense_id>', views.daily_expense_delete, name='daily_expense_delete'),
 
-    
 ]

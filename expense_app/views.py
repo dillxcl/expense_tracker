@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Year_Expense, Month_Expense, Daily_Expense
 from .forms import YearExpenseForm, DailyExpenseForm
 import json
-
+from decimal import Decimal
 # Create your views here.
 from django.contrib.auth.decorators import login_required
 
@@ -11,10 +11,22 @@ from django.contrib.auth.decorators import login_required
 def expense_home(request):
     if request.method == 'POST':
         form = YearExpenseForm(request.POST)
+       
         if form.is_valid():
-            year_expense_model = form.save(commit=False)
-            year_expense_model.user = request.user 
-            year_expense_model.save()
+            valid_data = form.cleaned_data
+            yearExpense = Year_Expense()
+            year = form['year'].value()
+            annual_salary = Decimal( form['annual_salary'].value() )
+            users = request.user
+            year_pk =form['pk'].value()
+
+            if year_pk == "0000": #Add new yearly expense         
+                yearExpense = Year_Expense(user = users, year = year, annual_salary=annual_salary)
+                yearExpense.save()
+            else:
+                yearExpenseEdit = Year_Expense(pk = year_pk, user = users, year = year, annual_salary=annual_salary)
+                yearExpenseEdit.save()
+            
             year_expense = Year_Expense.objects.filter(user=request.user)
             return render(request, 'expense_home.html', {'year_expense': year_expense})
         else:
@@ -29,6 +41,15 @@ def year_expense_delete(request, year_expense_id):
     year_expense = Year_Expense.objects.get(pk=year_expense_id)
     year_expense.delete()
     return redirect('home')
+    
+@login_required(login_url='login')
+def monthly_expense_delete(request, year_slug, month_slug ):
+    year_expense = get_object_or_404(Year_Expense, year_slug=year_slug)
+    month_expense = Month_Expense.objects.filter(year=year_expense)
+    current_month = Month_Expense.objects.get(month_slug=month_slug)
+    current_month.delete()
+
+    return render(request, 'expense_month.html', {'month_expense':month_expense, 'year_expense': year_expense})
 
 
 @login_required(login_url='login')
@@ -70,3 +91,21 @@ def daily_expense_delete(request, month_expense_id , daily_expense_id):
     current_month = Month_Expense.objects.get(pk=month_expense_id)
     daily_expense = Daily_Expense.objects.filter(month=current_month)
     return render(request, 'expense_daily.html', {'month_expense':current_month, 'daily_expense': daily_expense})
+
+#edit 
+@login_required(login_url='login')
+def year_expense_edit(request, year_expense_id):
+    
+    if request.method == 'POST':
+        item = Year_Expense.objects.get(pk = year_expense_id)
+        form = YearExpenseForm(request.POST, instance = item )
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        item =Year_Expense.objects.get(pk=year_expense_id)
+        return render(request, 'expense_home.html', {'item':item})
+    
+    
+
+
